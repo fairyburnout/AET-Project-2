@@ -3,14 +3,21 @@
  * MicroBit A
  */
 
-// set radio group to 200 (number subject to change)
+// sets radio group (to be used later)
  radio.setGroup(200)
 
- // function runs forever looking for a digital read on P0
+ // initializes servo to 0 degrees
+ servos.P0.setAngle(0)
+
  basic.forever(function () {
-     if (pins.digitalReadPin(DigitalPin.P0) == 1) {
-         // if digital read is detected, send string "turn" to MicroBit B
-         radio.sendString("turn")
+     // if button A is pressed or a digital read is recieved on P0, set angle to 180 degrees
+    if (pins.digitalReadPin(DigitalPin.P0) == 1 || input.buttonIsPressed(Button.A)) {
+         servos.P0.setAngle(180)
+     }
+     // if button B is pushed, reset to 0 degrees
+     if (input.buttonIsPressed(Button.B)) {
+         servos.P0.setAngle(0)
      }
  })
+ 
  
