@@ -3,21 +3,38 @@
  */
 
 /**Initializing setup:
- * set radio group to 201
+ * set radio group to 200
  * initialize servo angle to 90
  */
+ radio.setGroup(200)
+ servos.P0.setAngle(90)
 
-radio.setGroup(201)
-servos.P0.setAngle(90)
-
-/**forever function waits for a read from pin 0 to send a signal to microbit a*/
-basic.forever(function () {
-    if (pins.digitalReadPin(DigitalPin.P0) == 0) {
-        radio.sendNumber(0)
+ /**Function:
+  * on receiving a radio signal with the string "far"
+  * set servo angle to 90
+  * on receiving a radio signal with the string "close"
+  * set servo angle to 0
+  */
+ radio.onReceivedString(function (receivedString) {
+    if (receivedString == "far") {
+        servos.P0.setAngle(90)
+    }
+    if (receivedString == "close") {
+        servos.P0.setAngle(0)
     }
 })
 
-/**basically
- * if an alligator clip is connected to pin 0
- * then the microbit will send a signal
+/**Function:
+ * if the circuit is incomplete and the read on digital pin P0 is 0
+ * send string "grandma"
+ * if the circuit is complete and the read on digital pin P0 is 1
+ * send string "wolf"
  */
+basic.forever(function () {
+    if (pins.digitalReadPin(DigitalPin.P0) == 0) {
+        radio.sendString("grandma")
+    }
+    if (pins.digitalReadPin(DigitalPin.P0) == 1) {
+        radio.sendString("wolf")
+    }
+})
